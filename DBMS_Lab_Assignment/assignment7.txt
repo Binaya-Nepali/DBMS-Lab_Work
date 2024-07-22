@@ -1,0 +1,59 @@
+mysql> SELECT e.ename
+    -> FROM EMP e
+    -> JOIN EMP m ON e.mgr = m.empno
+    -> WHERE e.sal > m.sal;
++-------------+
+| ename       |
++-------------+
+| Oliver Jake |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT e.ename, e.deptno, e.sal
+    -> FROM EMP e
+    -> JOIN (
+    ->     SELECT deptno, MAX(sal) AS max_sal
+    ->     FROM EMP
+    ->     GROUP BY deptno
+    -> ) dept_max ON e.deptno = dept_max.deptno AND e.sal = dept_max.max_sal;
++---------------+--------+---------+
+| ename         | deptno | sal     |
++---------------+--------+---------+
+| Oliver Jake   |     60 | 5000.00 |
+| Jack Connor   |     80 | 4500.00 |
+| Charlie Kylie |     70 | 4200.00 |
++---------------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT e1.ename, e2.ename, d.loc
+    -> FROM EMP e1
+    -> JOIN EMP e2 ON e1.deptno = e2.deptno AND e1.empno < e2.empno
+    -> JOIN DEPT d ON e1.deptno = d.deptno;
++--------------+---------------+----------+
+| ename        | ename         | loc      |
++--------------+---------------+----------+
+| Oliver Jake  | Steve Austin  | New York |
+| Walter White | Charlie Kylie | Chicago  |
++--------------+---------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, e.sal + COALESCE(e.comm, 0) AS total_salary
+    -> FROM EMP e
+    -> WHERE e.sal + COALESCE(e.comm, 0) IN (
+    ->     SELECT MIN(sal) FROM EMP GROUP BY deptno
+    -> );
++---------------+--------------+
+| ename         | total_salary |
++---------------+--------------+
+| Walter White  |      4500.00 |
+| Charlie Kylie |      4800.00 |
++---------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT d.deptno, d.dname
+    -> FROM DEPT d
+    -> LEFT JOIN EMP e ON d.deptno = e.deptno
+    -> WHERE e.empno IS NULL;
+Empty set (0.00 sec)
+
+mysql>

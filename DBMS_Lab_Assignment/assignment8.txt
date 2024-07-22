@@ -1,0 +1,54 @@
+mysql> SELECT e.*, d.*
+    -> FROM EMP e
+    -> JOIN DEPT d ON e.deptno = d.deptno;
++-------+---------------+-----------+------+------------+---------+---------+--------+--------+-------+---------------+
+| empno | ename         | job       | mgr  | hiredate   | sal     | comm    | deptno | deptno | dname | loc           |
++-------+---------------+-----------+------+------------+---------+---------+--------+--------+-------+---------------+
+|     1 | Oliver Jake   | Manager   |    2 | 2010-01-01 | 5000.00 | 1000.00 |     60 |     60 | HR    | New York      |
+|     2 | Walter White  | Clerk     |    1 | 2011-02-01 | 4000.00 |  500.00 |     70 |     70 | Sales | Chicago       |
+|     3 | Jack Connor   | Analyst   |    1 | 2012-03-01 | 4500.00 |  800.00 |     80 |     80 | IT    | San Francisco |
+|     4 | Steve Austin  | Developer |    1 | 2013-04-01 | 4800.00 |  900.00 |     60 |     60 | HR    | New York      |
+|     5 | Charlie Kylie | Tester    |    1 | 2014-05-01 | 4200.00 |  600.00 |     70 |     70 | Sales | Chicago       |
++-------+---------------+-----------+------+------------+---------+---------+--------+--------+-------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, d.dname
+    -> FROM EMP e
+    -> LEFT JOIN DEPT d ON e.deptno = d.deptno;
++---------------+-------+
+| ename         | dname |
++---------------+-------+
+| Oliver Jake   | HR    |
+| Walter White  | Sales |
+| Jack Connor   | IT    |
+| Steve Austin  | HR    |
+| Charlie Kylie | Sales |
++---------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, d.dname
+    -> FROM EMP e
+    -> RIGHT JOIN DEPT d ON e.deptno = d.deptno;
++---------------+-------+
+| ename         | dname |
++---------------+-------+
+| Oliver Jake   | HR    |
+| Steve Austin  | HR    |
+| Walter White  | Sales |
+| Charlie Kylie | Sales |
+| Jack Connor   | IT    |
++---------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM EMP
+    -> WHERE sal > (SELECT AVG(sal) FROM EMP);
++-------+--------------+-----------+------+------------+---------+---------+--------+
+| empno | ename        | job       | mgr  | hiredate   | sal     | comm    | deptno |
++-------+--------------+-----------+------+------------+---------+---------+--------+
+|     1 | Oliver Jake  | Manager   |    2 | 2010-01-01 | 5000.00 | 1000.00 |     60 |
+|     4 | Steve Austin | Developer |    1 | 2013-04-01 | 4800.00 |  900.00 |     60 |
++-------+--------------+-----------+------+------------+---------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,110 @@
+mysql> create database lab_assignment;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| lab_assignment     |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> use lab assignment;
+ERROR 1049 (42000): Unknown database 'lab'
+mysql> use lab_assignment;
+Database changed
+mysql> CREATE TABLE EMPLOYEES (
+    ->     Employee_Id INT PRIMARY KEY,
+    ->     First_Name VARCHAR(50),
+    ->     Last_Name VARCHAR(50),
+    ->     Email VARCHAR(100),
+    ->     Phone_Number VARCHAR(20),
+    ->     Hire_Date DATE,
+    ->     Job_Id VARCHAR(10),
+    ->     Salary DECIMAL(10, 2),
+    ->     Commission_Pct DECIMAL(5, 2),
+    ->     Manager_Id INT,
+    ->     Department_Id INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEES (Employee_Id, First_Name, Last_Name, Phone_Number, Hire_Date, Job_Id, Salary, Commission_Pct, Manager_Id, Department_Id)
+    -> VALUES
+    -> (1, 'Oliver', 'Jake', '123-456-7890', '2020-01-01', 'DEV', 5000, NULL, 101, 60),
+    -> (2, 'Walter', 'White', '123-456-7891', '2021-02-01', 'MGR', 7000, NULL, 102, 70),
+    -> (3, 'Jack', 'Connor', '123-456-7892', '2022-03-01', 'DEV', 4800, 10, 101, 80),
+    -> (4, 'Steve', 'Austin', '123-456-7893', '2020-04-01', 'HR', 4500, NULL, 103, 60),
+    -> (5, 'Charlie', 'Kylie', '123-456-7894', '2023-05-01', 'DEV', 5200, NULL, 101, 70);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------------+------------+-----------+-------+--------------+------------+--------+---------+----------------+------------+---------------+
+| Employee_Id | First_Name | Last_Name | Email | Phone_Number | Hire_Date  | Job_Id | Salary  | Commission_Pct | Manager_Id | Department_Id |
++-------------+------------+-----------+-------+--------------+------------+--------+---------+----------------+------------+---------------+
+|           1 | Oliver     | Jake      | NULL  | 123-456-7890 | 2020-01-01 | DEV    | 5000.00 |           NULL |        101 |            60 |
+|           2 | Walter     | White     | NULL  | 123-456-7891 | 2021-02-01 | MGR    | 7000.00 |           NULL |        102 |            70 |
+|           3 | Jack       | Connor    | NULL  | 123-456-7892 | 2022-03-01 | DEV    | 4800.00 |          10.00 |        101 |            80 |
+|           4 | Steve      | Austin    | NULL  | 123-456-7893 | 2020-04-01 | HR     | 4500.00 |           NULL |        103 |            60 |
+|           5 | Charlie    | Kylie     | NULL  | 123-456-7894 | 2023-05-01 | DEV    | 5200.00 |           NULL |        101 |            70 |
++-------------+------------+-----------+-------+--------------+------------+--------+---------+----------------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Employee_Id, First_Name, Last_Name, Salary FROM EMPLOYEES;
++-------------+------------+-----------+---------+
+| Employee_Id | First_Name | Last_Name | Salary  |
++-------------+------------+-----------+---------+
+|           1 | Oliver     | Jake      | 5000.00 |
+|           2 | Walter     | White     | 7000.00 |
+|           3 | Jack       | Connor    | 4800.00 |
+|           4 | Steve      | Austin    | 4500.00 |
+|           5 | Charlie    | Kylie     | 5200.00 |
++-------------+------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Salary >= 4800;
++------------+-----------+
+| First_Name | Last_Name |
++------------+-----------+
+| Oliver     | Jake      |
+| Walter     | White     |
+| Jack       | Connor    |
+| Charlie    | Kylie     |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Last_Name = 'Austin';
++------------+-----------+
+| First_Name | Last_Name |
++------------+-----------+
+| Steve      | Austin    |
++------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Department_Id IN (60, 70, 80);
++------------+-----------+
+| First_Name | Last_Name |
++------------+-----------+
+| Oliver     | Jake      |
+| Walter     | White     |
+| Jack       | Connor    |
+| Steve      | Austin    |
+| Charlie    | Kylie     |
++------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT Manager_Id FROM EMPLOYEES;
++------------+
+| Manager_Id |
++------------+
+|        101 |
+|        102 |
+|        103 |
++------------+
+3 rows in set (0.00 sec)
+
+mysql>

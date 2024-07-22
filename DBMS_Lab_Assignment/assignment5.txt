@@ -1,0 +1,96 @@
+mysql> CREATE TABLE EMP (
+    ->     EmpNo INT PRIMARY KEY,
+    ->     EmpName VARCHAR(100),
+    ->     Job VARCHAR(50),
+    ->     Basic DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO EMP (EmpNo, EmpName, Job, Basic)
+    -> VALUES
+    -> (1, 'Oliver Jake', 'Manager', 5000),
+    -> (2, 'Walter White', 'Clerk', 4000),
+    -> (3, 'Jack Connor', 'Analyst', 4500),
+    -> (4, 'Steve Austin', 'Developer', 4800),
+    -> (5, 'Charlie Kylie', 'Tester', 4200);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMP ADD COLUMN DA DECIMAL(10, 2);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMP ADD COLUMN HRA DECIMAL(10, 2);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMP ADD COLUMN PF DECIMAL(10, 2);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMP ADD COLUMN GrossPay DECIMAL(10, 2);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMP ADD COLUMN NetPay DECIMAL(10, 2);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP SET DA = Basic * 0.15;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> UPDATE EMP SET HRA = Basic * 0.10;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> UPDATE EMP SET PF = Basic * 0.12;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> UPDATE EMP SET GrossPay = Basic + DA + HRA;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> UPDATE EMP SET NetPay = GrossPay - PF;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP;
++-------+---------------+-----------+---------+--------+--------+--------+----------+---------+
+| EmpNo | EmpName       | Job       | Basic   | DA     | HRA    | PF     | GrossPay | NetPay  |
++-------+---------------+-----------+---------+--------+--------+--------+----------+---------+
+|     1 | Oliver Jake   | Manager   | 5000.00 | 750.00 | 500.00 | 600.00 |  6250.00 | 5650.00 |
+|     2 | Walter White  | Clerk     | 4000.00 | 600.00 | 400.00 | 480.00 |  5000.00 | 4520.00 |
+|     3 | Jack Connor   | Analyst   | 4500.00 | 675.00 | 450.00 | 540.00 |  5625.00 | 5085.00 |
+|     4 | Steve Austin  | Developer | 4800.00 | 720.00 | 480.00 | 576.00 |  6000.00 | 5424.00 |
+|     5 | Charlie Kylie | Tester    | 4200.00 | 630.00 | 420.00 | 504.00 |  5250.00 | 4746.00 |
++-------+---------------+-----------+---------+--------+--------+--------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT EmpName, Job, Basic
+    -> FROM EMP
+    -> WHERE Basic = (SELECT MIN(Basic) FROM EMP WHERE Job = EMP.Job);
++--------------+-------+---------+
+| EmpName      | Job   | Basic   |
++--------------+-------+---------+
+| Walter White | Clerk | 4000.00 |
++--------------+-------+---------+
+1 row in set (0.01 sec)
+
+mysql> UPDATE EMP SET NetPay = NetPay + 1200 WHERE NetPay < 10000;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP WHERE GrossPay BETWEEN 10000 AND 20000;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM EMP WHERE GrossPay = (SELECT MAX(GrossPay) FROM EMP);
++-------+-------------+---------+---------+--------+--------+--------+----------+---------+
+| EmpNo | EmpName     | Job     | Basic   | DA     | HRA    | PF     | GrossPay | NetPay  |
++-------+-------------+---------+---------+--------+--------+--------+----------+---------+
+|     1 | Oliver Jake | Manager | 5000.00 | 750.00 | 500.00 | 600.00 |  6250.00 | 6850.00 |
++-------+-------------+---------+---------+--------+--------+--------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql>

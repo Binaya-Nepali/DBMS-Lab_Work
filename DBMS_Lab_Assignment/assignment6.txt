@@ -1,0 +1,78 @@
+mysql> CREATE TABLE DEPT (
+    ->     deptno INT PRIMARY KEY,
+    ->     dname VARCHAR(50),
+    ->     loc VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE EMP (
+    ->     empno INT PRIMARY KEY,
+    ->     ename VARCHAR(100),
+    ->     job VARCHAR(50),
+    ->     mgr INT,
+    ->     hiredate DATE,
+    ->     sal DECIMAL(10, 2),
+    ->     comm DECIMAL(10, 2),
+    ->     deptno INT,
+    ->     FOREIGN KEY (deptno) REFERENCES DEPT(deptno)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO DEPT (deptno, dname, loc) VALUES (60, 'HR', 'New York'), (70, 'Sales', 'Chicago'), (80, 'IT', 'San Francisco');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+    -> VALUES
+    -> (1, 'Oliver Jake', 'Manager', 2, '2010-01-01', 5000, 1000, 60),
+    -> (2, 'Walter White', 'Clerk', 1, '2011-02-01', 4000, 500, 70),
+    -> (3, 'Jack Connor', 'Analyst', 1, '2012-03-01', 4500, 800, 80),
+    -> (4, 'Steve Austin', 'Developer', 1, '2013-04-01', 4800, 900, 60),
+    -> (5, 'Charlie Kylie', 'Tester', 1, '2014-05-01', 4200, 600, 70);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP SET sal = sal * 1.15 WHERE DATEDIFF(CURDATE(), hiredate) > 30 * 365;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> DELETE FROM EMP WHERE DATEDIFF(CURDATE(), hiredate) > 30 * 365;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT mgr, COUNT(*) AS NumberOfEmployees FROM EMP GROUP BY mgr ORDER BY NumberOfEmployees DESC LIMIT 1;
++------+-------------------+
+| mgr  | NumberOfEmployees |
++------+-------------------+
+|    1 |                 4 |
++------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE VIEW EmployeeManager AS
+    -> SELECT e1.ename AS EmployeeName, e2.ename AS ManagerName
+    -> FROM EMP e1
+    -> JOIN EMP e2 ON e1.mgr = e2.empno;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from emp;
++-------+---------------+-----------+------+------------+---------+---------+--------+
+| empno | ename         | job       | mgr  | hiredate   | sal     | comm    | deptno |
++-------+---------------+-----------+------+------------+---------+---------+--------+
+|     1 | Oliver Jake   | Manager   |    2 | 2010-01-01 | 5000.00 | 1000.00 |     60 |
+|     2 | Walter White  | Clerk     |    1 | 2011-02-01 | 4000.00 |  500.00 |     70 |
+|     3 | Jack Connor   | Analyst   |    1 | 2012-03-01 | 4500.00 |  800.00 |     80 |
+|     4 | Steve Austin  | Developer |    1 | 2013-04-01 | 4800.00 |  900.00 |     60 |
+|     5 | Charlie Kylie | Tester    |    1 | 2014-05-01 | 4200.00 |  600.00 |     70 |
++-------+---------------+-----------+------+------------+---------+---------+--------+
+5 rows in set (0.02 sec)
+
+mysql>  select * from dept;
++--------+-------+---------------+
+| deptno | dname | loc           |
++--------+-------+---------------+
+|     60 | HR    | New York      |
+|     70 | Sales | Chicago       |
+|     80 | IT    | San Francisco |
++--------+-------+---------------+
+3 rows in set (0.00 sec)
+
+mysql>

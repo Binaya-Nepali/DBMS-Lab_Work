@@ -1,0 +1,64 @@
+mysql> CREATE TABLE SALES (
+    ->     Sales_No INT PRIMARY KEY,
+    ->     Sales_Name VARCHAR(100),
+    ->     Branch VARCHAR(50),
+    ->     Sales_Amount DECIMAL(10, 2),
+    ->     DOB DATE
+    -> );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO SALES (Sales_No, Sales_Name, Branch, Sales_Amount, DOB)
+    -> VALUES
+    -> (1, 'Oliver Jake', 'BranchA', 15000, '1990-12-21'),
+    -> (2, 'Walter White', 'BranchB', 20000, '1985-12-11'),
+    -> (3, 'Jack Connor', 'BranchA', 18000, '1992-12-25'),
+    -> (4, 'Steve Austin', 'BranchC', 17000, '1988-12-05'),
+    -> (5, 'Charlie Kylie', 'BranchB', 22000, '1993-12-15');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Branch, SUM(Sales_Amount) AS Total_Sales FROM SALES GROUP BY Branch;
++---------+-------------+
+| Branch  | Total_Sales |
++---------+-------------+
+| BranchA |    33000.00 |
+| BranchB |    42000.00 |
+| BranchC |    17000.00 |
++---------+-------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT Branch, AVG(Sales_Amount) AS Avg_Sales FROM SALES GROUP BY Branch;
++---------+--------------+
+| Branch  | Avg_Sales    |
++---------+--------------+
+| BranchA | 16500.000000 |
+| BranchB | 21000.000000 |
+| BranchC | 17000.000000 |
++---------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS DOB FROM SALES WHERE MONTH(DOB) = 12;
++---------------+-----------+
+| Sales_Name    | DOB       |
++---------------+-----------+
+| Oliver Jake   | 21-Dec-90 |
+| Walter White  | 11-Dec-85 |
+| Jack Connor   | 25-Dec-92 |
+| Steve Austin  | 05-Dec-88 |
+| Charlie Kylie | 15-Dec-93 |
++---------------+-----------+
+5 rows in set (0.02 sec)
+
+mysql> SELECT Sales_Name, DOB FROM SALES ORDER BY MONTH(DOB);
++---------------+------------+
+| Sales_Name    | DOB        |
++---------------+------------+
+| Oliver Jake   | 1990-12-21 |
+| Walter White  | 1985-12-11 |
+| Jack Connor   | 1992-12-25 |
+| Steve Austin  | 1988-12-05 |
+| Charlie Kylie | 1993-12-15 |
++---------------+------------+
+5 rows in set (0.00 sec)
+
+mysql>
